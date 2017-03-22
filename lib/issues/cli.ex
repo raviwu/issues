@@ -48,12 +48,23 @@ defmodule Issues.CLI do
   def process({user, project, _count}) do
     Issues.GithubIssues.fetch(user, project)
     |> decode_response
+    |> sort_into_asc_order
   end
 
+  @doc """
+  Extract the API response with elixir object or Print Error if failed to fetch from Github
+  """
   def decode_response({:ok, body}), do: body
   def decode_response({:error, error}) do
     {_, message} = List.keyfind(error, "message", 0)
     IO.puts "Error fetching from Github: #{message}"
     System.halt(2)
+  end
+
+  @doc """
+  Sort the response List ASC by created_at
+  """
+  def sort_into_asc_order(issues_list) do
+    Enum.sort(issues_list, fn i1, i2 -> Map.get(i1, "created_at") <= Map.get(i2, "created_at") end)
   end
 end
