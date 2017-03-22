@@ -36,7 +36,10 @@ defmodule Issues.CLI do
   @doc """
   IO.puts usage with :help input
 
-  Fetch GitHub issues if tuple of `{user, project, count}` is provided 
+  If tuple of `{user, project, count}` is provided:
+  - fetch GitHub API for the issues list
+  - sort the issues by created_at ASC
+  - take the first count assigned (default to be 4)
   """
   def process(:help) do
     IO.puts """
@@ -49,6 +52,7 @@ defmodule Issues.CLI do
     Issues.GithubIssues.fetch(user, project)
     |> decode_response
     |> sort_into_asc_order
+    |> Enum.take(count)
   end
 
   @doc """
