@@ -6,6 +6,8 @@ defmodule Issues.Mixfile do
       app: :issues,
       escript: escript_config(),
       version: "0.1.0",
+      name: "Issues",
+      source_url: "https://github.com/raviwu/issues",
       elixir: "~> 1.4",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -34,8 +36,10 @@ defmodule Issues.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      httpoison: "~> 0.10",
-      poison: "~> 3.1"
+      { :httpoison, "~> 0.10" },
+      { :poison, "~> 3.1" },
+      { :ex_doc, "~> 0.14", only: :dev, runtime: false },
+      { :earmark, "~> 1.2", override: true }
     ]
   end
 
